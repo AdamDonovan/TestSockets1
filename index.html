@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Color change Example</title>
+<style type="text/css">
+  .usernameInput{
+   width: 180px; 
+   height: 80px;
+   border: none;
+}
+</style>
+</head>
+<body>
+ 
+        <button class="usernameInput" style="background-color: gray;" >click me</button> 
+     
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    var counter=1;
+
+    $(function () {
+      var socket = io.connect();
+      $('.usernameInput').click(function () {
+        var clr="gray";
+        if(counter ==1){
+          clr="red";
+        }else if(counter ==2){
+          clr="green";
+        }else if(counter == 3 ){
+          counter=0;
+        }
+counter++;
+        socket.emit('send message', clr);
+      })
+      socket.on('new message',function (data) {
+        console.log(data)
+        $('.usernameInput').css('background-color', data.msg);
+      })
+    })
+  </script>
+</body>
+</html>
